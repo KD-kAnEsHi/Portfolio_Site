@@ -1,34 +1,218 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 html, body{
     margin: 0;
     padding: 0;
+    height: 100%;
     font-family: Arial, sans-serif;
     scroll-behavior: smooth;
     background-color: red;
     /* color: #333 */
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
 
-/* Navigation  bars of the program: */
-nav {
+
+
+
+
+/* NAVIGATION BAR - PORTOFOLIO */
+nav {       /* Navigation  bars of the program: */
     position: fixed;
     top: 0;
     width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    background: transparent;
     z-index: 1000;
+    color: grey;
+    
 }
 
 nav ul {    /* center the rows */
     list-style: none;
     display: flex;
+    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
     margin: 0;
-    padding: 1rem 0;
+    padding: 1.3rem 0;
+    border-radius: 40px;  
+    background-color: rgba(255, 255, 255, .6);
 }
 
 nav li {    /* Space between the objects */
     margin: 0 1rem;
+    position: relative;
 }
 
-nav a {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
+nav a {     /* link of each item */
+    padding: .8rem 1rem;
+    text-decoration: none;
+    display: center;
+    text-align: center;
+    font-size: 1.5rem; 
+    border-radius: 40px;
+    font-weight: bold;
+    color: black;
+    transition: background-color 0.4s ease;
 }
+
+nav a:hover { /* Hovering navigation bar */
+    background-color: rgba(255, 255, 255, .63);
+}
+
+nav li.active::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 3rem;
+    height: 3rem;
+    background-color: rgba(255, 255, 255, .63);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+nav li.active a {
+    color: #111;
+    font-weight: bold;
+}
+
+
+
+
+
+/* SECTIONS : Home - PORTOFOLIO */
+.section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#home {
+    margin-bottom: 2rem;
+    color:#111;
+    flex-wrap: 70px;
+
+    display: flex;
+    background-image: url(../images/manga.jpg);
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: row;
+    padding: 7rem;
+    gap: 5rem;
+    color: black;
+}
+
+#profile-img img {
+    object-fit: cover; 
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.introduction h2 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.introduction h3 {
+    font-size: 2rem; 
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: black;
+}
+
+.social-links {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+
+}
+
+.social-links a{
+    background:#ffffffcc;
+    padding:0.5rem 1.2rem;
+    border-radius:2rem;
+    font-weight:600;
+    font-weight: bold;
+    color:#111;
+    text-decoration:none;
+    align-items:center;
+    gap:0.5rem;
+    transition:background 0.25s ease;
+
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.social-icon img{
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.social-icon img:hover {
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+/* SECTIONS : Project - PORTOFOLIO */
+#project-item{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 4rem;
+    width: 100%;
+}
+
+
+.project-text {
+
+}
+
+
+
+
+
+
+
+
+
+
