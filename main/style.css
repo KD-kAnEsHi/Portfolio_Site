@@ -10,7 +10,7 @@ html, body{
     height: 100%;
     font-family: Arial, sans-serif;
     scroll-behavior: smooth;
-    background-color: red;
+    background-color: #F9FAFB;
     /* color: #333 */
 }
 
@@ -136,6 +136,9 @@ nav li.active a {
 .introduction h2 {
     font-size: 3rem;
     margin-bottom: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex;
     font-weight: bold;
     color: black;
 }
@@ -220,6 +223,7 @@ nav li.active a {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    padding-right: 2%;
     margin: 0 auto;
 }
 
@@ -297,7 +301,6 @@ nav li.active a {
 
 
 /* EXPERIENCE : HUB - PORTOFOLIO */
-
 #experience {
     padding: 5rem 5vw;
     flex-direction: column;
@@ -307,7 +310,7 @@ nav li.active a {
     font-size: 5rem;
     text-align: left;
     padding-top: .7rem;
-    padding-left: 5%;
+    padding-left: 3%;
     font-size: 5rem;
     font-weight: bolder;
 }
@@ -318,8 +321,8 @@ nav li.active a {
     justify-content: left;
     padding-top: 1rem;
     display: flex;
-    gap: 2rem;
-    width: 100%;
+    gap: 1.5rem;
+    width: 102.5%;
 }
 
 .experience-card {
@@ -337,7 +340,53 @@ nav li.active a {
     min-height: 370px;
     border-radius: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    gap: 2rem;
+
+    background-size: cover;
+    background-position: center;
+}
+
+
+/* EXPERIENCE: Jobs*/
+.job-title {
+    font-size: 3rem;
+    padding-left: 5%;
+    text-decoration: underline;
+    font-weight: bold;
+    border-left: 2px solid red;
+}
+
+.job-description {
+    font-size: large;
+}
+
+.company-details {
+    padding-top: 0%;
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+    gap: 5rem;
+}
+
+.job-description ul{
+    padding: 20px;
+
+}
+
+
+
+
+/* EXPERIENCE    : GOFUNDME - Background Images for the cards */
+#card-image1 {
+    background-image: url(../images/monet-forest.jpg);
+}
+#card-image2 {
+    background-image: url(../images/monet-trees.jpg);
+}
+#card-image3 {
+    background-image: url(../images/titan.jpeg);
+}
+#card-image4 {
+    background-image: url(../images/manga.jpg);
 }
 
 
@@ -347,9 +396,7 @@ nav li.active a {
 
 
 
-
 /* EDUCATION : GOFUNDME - PORTOFOLIO */
-
 #education {
     padding: 5rem 5vw;
     flex-direction: column;
@@ -388,3 +435,110 @@ nav li.active a {
     padding-left: 1.5rem;
     line-height: 1.6;
 }
+
+
+
+
+
+
+/* EXPERIENCE : HUB - PORTOFOLIO */
+#education {
+    padding: 4rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.education-title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    padding: 0 5vw;
+    text-align: right;
+    padding-top: 1rem;
+    font-size: 5rem;
+    align-items: right;
+    font-weight: bolder;
+
+}
+
+.education-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+}
+
+.education-card {
+    border-radius: black;
+    box-sizing: border-box;
+    text-align: left;
+    max-width: 900px;
+    width: 100%;
+    padding: 2rem 5rw;
+    box-sizing: border-box;
+}
+
+.school-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.date {
+    gap: 10rem;
+    display: flex;
+    flex-direction: row;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.education-details{
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    line-height: 1.6;
+    text-align: left;
+    display: inline-block;
+}
+
+
+
+
+
+/* CONTACT: END - PORTOFOLIO */
+#contact {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 0%;
+    font-family: 'Georgia', serif;
+    font-size: x-large;
+    gap: .8rem;
+    box-sizing: border-box;
+
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#contact p {
+    width: 100%;
+    text-align: center;
+    max-width: fit-content;
+}
+
+.contact-info {
+    margin: 0.25rem;
+}
+
+.contact-info h3 {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    align-items: center;
+}
+
+.contact-info p {
+    margin: 0.25rem 0;
+}
+
