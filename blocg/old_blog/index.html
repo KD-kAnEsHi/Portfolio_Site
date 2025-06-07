@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>blog</title>
+    <link rel="shortcut icon" href="../images/alone-png.png" type="image/x-icon">
+    <link rel="icon" href="../images/alone-png.png" type="image/x-icon">
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Projects Building Vlogs</h1>
+        <div class="upload-controls">
+            <button onclick="openUploadWidget('life')">Upload to Life</button>
+            <button onclick="openUploadWidget('tech')">Upload to Tech</button>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>Life</h2>
+            <div id="life-gallery" class="gallery"></div>
+        </section>
+
+        <section>
+            <h2>Tech</h2>
+            <div id="tech-gallery" class="gallery"></div> 
+        </section>
+    </main>
+    <p><a href="../main/index.html">← Back to home</a></p>
+</body>
+</html>

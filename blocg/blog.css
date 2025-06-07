@@ -68,6 +68,12 @@ button:hover {
     transform: scale(1.03);
 }
 
+a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
 
-
-
+a:hover {
+  color: black;
+}
