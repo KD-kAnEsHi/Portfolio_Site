@@ -35,7 +35,21 @@ nav {       /* Navigation  bars of the program: */
     background: transparent;
     z-index: 1000;
     color: grey;
-    
+}
+
+nav.nav-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+nav.nav-visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Glassmorphism effect on hover */
+nav ul:hover {
+    backdrop-filter: blur(20px);
 }
 
 nav ul {    /* center the rows */
@@ -68,7 +82,7 @@ nav a {     /* link of each item */
     transition: background-color 0.4s ease;
 }
 
-nav a:hover { /* Hovering navigation bar */
+nav a:hover { 
     background-color: rgba(255, 255, 255, .63);
 }
 
@@ -80,7 +94,6 @@ nav li.active::before {
     transform: translate(-50%, -50%);
     width: 3rem;
     height: 3rem;
-    background-color: rgba(255, 255 , 255, .63);
     border-radius: 50%;
     z-index: 1;
 }
@@ -122,6 +135,23 @@ nav li.active a {
     padding: 7rem;
     gap: 5rem;
     color: black;
+    position: relative;
+}
+
+#home::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.4); /* White overlay with 40% opacity */
+    z-index: 1;
+}
+
+#home > * {
+    position: relative;
+    z-index: 2;
 }
 
 #profile-img img {
@@ -140,7 +170,7 @@ nav li.active a {
     justify-content: center;
     display: flex;
     font-weight: bold;
-    color: black;
+    color: black;    
 }
 
 .introduction h3 {
@@ -157,7 +187,6 @@ nav li.active a {
     justify-content: center;
     align-items:center;
     gap: 3rem;
-
 }
 
 .social-links a{
@@ -170,7 +199,6 @@ nav li.active a {
     text-decoration:none;
     gap:0.5rem;
     transition:background 0.25s ease;
-
 }
 
 .social-icon {
@@ -191,8 +219,10 @@ nav li.active a {
 .social-icon img:hover {
     transform: scale(1.1);
 }
+
 .social-links :hover {
     background-color: #444;
+    transform: scale(1.2)
 }
 
 
@@ -291,6 +321,7 @@ nav li.active a {
 
 .project-links a:hover {
     background-color: #444;
+    transform: scale(1.1)
 }
 
 
@@ -343,53 +374,99 @@ nav li.active a {
 
     background-size: cover;
     background-position: center;
+    position: relative;
 }
+
+.experience-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3); /* Light overlay */
+    z-index: 1;
+}
+
+.experience-card > *{
+    position: relative;
+    z-index: 2;
+}
+
+.experience-card:hover {
+    transform: scale(1.004)
+}
+
+.experience-card img {
+    flex: 1; 
+    max-width: 30%; 
+    min-width: 300px; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+    margin-left: 2rem; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.experience-card img:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+}
+
 
 
 /* EXPERIENCE: Jobs*/
 .job-title {
     font-size: 3rem;
-    padding-left: 5%;
+    padding-left: 2%;
     text-decoration: underline;
     font-weight: bold;
-    border-left: 2px solid red;
+    border-left: 4px solid red;
+}
+
+.job-title:hover {
+    border-left: 3px red;
+    border-left: 6px solid red;
 }
 
 .job-description {
     font-size: large;
+    font-size: 200%;
 }
 
 .company-details {
     padding-top: 0%;
     display: flex;
     flex-direction: row;
-    font-weight: bold;
-    gap: 5rem;
+    font-weight: bolder;
+    gap: 10rem;
 }
 
 .job-description ul{
-    padding: 20px;
-
+    padding-left: 50px;
+    font-size: 80%;
+    font-weight: bold;
+    background: white;
 }
+
 
 
 
 
 /* EXPERIENCE    : GOFUNDME - Background Images for the cards */
 #card-image1 {
-    background-image: url(../images/monet-forest.jpg);
+    background-image: url();
 }
 #card-image2 {
-    background-image: url(../images/monet-trees.jpg);
+    background-image: url();
 }
 #card-image3 {
-    background-image: url(../images/titan.jpeg);
+    background-image: url();
 }
 #card-image4 {
-    background-image: url(../images/manga.jpg);
+    background-image: url();
 }
-
-
 
 
 
@@ -457,7 +534,6 @@ nav li.active a {
     font-size: 5rem;
     align-items: right;
     font-weight: bolder;
-
 }
 
 .education-list {
@@ -538,7 +614,9 @@ nav li.active a {
     align-items: center;
 }
 
-.contact-info p {
+.contact-info p a{
     margin: 0.25rem 0;
+    text-decoration: none;
+
 }
 
