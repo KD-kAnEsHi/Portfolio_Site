@@ -8,7 +8,8 @@ function openUploadWidget(category) {
             uploadPreset: uploadPreset,
             sources: ['local', 'url', 'camera'],
             multiple: false,
-            cropping: false
+            cropping: false,
+            tags: [category]
         },
         (error, result) => {
             console.log("Widget callback:", error, result);
