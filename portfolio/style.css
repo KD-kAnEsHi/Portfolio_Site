@@ -615,6 +615,7 @@ nav li.active a {
 }
 
 .contact-info p a{
+    color: #007acc;
     margin: 0.25rem 0;
     text-decoration: none;
 
