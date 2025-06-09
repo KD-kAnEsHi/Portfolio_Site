@@ -74,6 +74,6 @@ h1 a:focus {
 }
 
 .nav-links a:hover {
-  color: #444;
+  color: #b2b2b2;
   transform: scale(1.5)
 }
