@@ -4,4 +4,4 @@ Hello this is my personal site,
 
 Thanks For checking this out, lol
 
-please dont steal hack my key not that i care much lol.
+https://kd-kaneshi.github.io/Portfolio_Site/index.html
