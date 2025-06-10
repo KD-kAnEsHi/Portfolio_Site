@@ -325,6 +325,11 @@ nav li.active a {
 }
 
 
+.tools-used {
+    font-weight: bold;
+    color: #007acc;
+}
+
 
 
 
@@ -416,9 +421,11 @@ nav li.active a {
 
 
 
+
+
 /* EXPERIENCE: Jobs*/
 .job-title {
-    font-size: 3rem;
+    font-size: 2rem;
     padding-left: 2%;
     text-decoration: underline;
     font-weight: bold;
@@ -445,8 +452,7 @@ nav li.active a {
 
 .job-description ul{
     padding-left: 50px;
-    font-size: 80%;
-    font-weight: bold;
+    font-size: 60%;
     background: white;
 }
 

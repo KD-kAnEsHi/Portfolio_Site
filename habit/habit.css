@@ -1,6 +1,6 @@
 body {
   font-family: system-ui, sans-serif;
-  background-color: #f7f8fa;
+  background-color: #F9FAFB;
   color: #222;
   padding: 2rem;
   margin: 0;
@@ -40,12 +40,11 @@ h1 {
   flex-direction: column;
   align-items: left;
   padding: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid black;
   border-radius: 12px;
   min-width: 160px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
 
 
 .month-name {
@@ -63,9 +62,9 @@ h1 {
 
 
 .square {
-  width: 14px;
-  height: 14px;
-  background-color: #ebedf0;
+  width: 15px;
+  height: 15px;
+  background-color: gray;
   border-radius: 2px;
   cursor: pointer;
   transition: background-color 0.2s;
@@ -84,4 +83,8 @@ button {
   color: white;
   border: none;
   border-radius: 4px;
+
+  display: flex;
+  flex-direction: center;
+  text-align: center;
 }
