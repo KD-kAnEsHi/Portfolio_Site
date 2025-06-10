@@ -1,140 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="../../images/alone.ico" type="image/x-icon" />
-    <link rel="icon" href="../../images/alone.ico" type="image/x-icon" />
-    <title>Habit Tracker</title>
-    <link rel="stylesheet" href="habit.css" />
-  </head>
-  <body>
-    <h1>Habit Tracker</h1>
-    <div id="habits-container"></div>
+    <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <link rel="shortcut icon" href="../../images/alone.ico" type="image/x-icon" />
+            <link rel="icon" href="../../images/alone.ico" type="image/x-icon" />
+            <title>Habit Tracker - Karl Azangue</title>
+            <link rel="stylesheet" href="habit.css" />
+    </head>
+    <body>
+        <h1>Habit Tracker</h1>
+        <div id="habits-container"></div>
+            <div id="auth-controls">
+            <button id="login-button">Admin Login</button>
+            <button id="logout-button" style="display: none">Logout</button>
+        </div>
 
-    <div id="auth-controls">
-      <button id="login-button">Admin Login</button>
-      <button id="logout-button" style="display: none">Logout</button>
-    </div>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+            import {
+                getAuth,
+                signInWithPopup,
+                GoogleAuthProvider,
+                signOut,
+                onAuthStateChanged,
+            } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
 
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-      import {
-        getAuth,
-        signInWithPopup,
-        GoogleAuthProvider,
-        signOut,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+            const firebaseConfig = {
+                apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
+                authDomain: "habit-tracker-37f97.firebaseapp.com",
+                projectId: "habit-tracker-37f97",
+                storageBucket: "habit-tracker-37f97.appspot.com",
+                messagingSenderId: "992883008825",
+                appId: "1:992883008825:web:1b7d42f3b0b0dbf90234e8",
+                measurementId: "G-50R2XSXN2G"
+            };
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
-        authDomain: "habit-tracker-37f97.firebaseapp.com",
-        projectId: "habit-tracker-37f97",
-        storageBucket: "habit-tracker-37f97.appspot.com",
-        messagingSenderId: "992883008825",
-        appId: "1:992883008825:web:1b7d42f3b0b0dbf90234e8",
-        measurementId: "G-50R2XSXN2G"
-      };
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const provider = new GoogleAuthProvider();
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const provider = new GoogleAuthProvider();
+            let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
+            const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
+            const year = new Date().getFullYear();
 
-      let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
-      const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
-      const year = new Date().getFullYear();
-
-      function formatDate(date) {
-        return date.toISOString().split("T")[0];
-      }
-
-      function getDaysInMonth(month, year) {
-        return new Date(year, month + 1, 0).getDate();
-      }
-
-      function renderHabits() {
-        const container = document.getElementById("habits-container");
-        container.innerHTML = "";
-        const today = formatDate(new Date());
-
-        habits.forEach((habit) => {
-          const block = document.createElement("div");
-          block.classList.add("habit-block");
-
-          const title = document.createElement("div");
-          title.classList.add("habit-title");
-          title.textContent = habit;
-          block.appendChild(title);
-
-          const logButton = document.createElement("button");
-          logButton.textContent = "Log Today";
-          logButton.classList.add("log-button");
-          logButton.style.display = "none";
-          logButton.addEventListener("click", () => {
-            const key = `${habit}_${today}`;
-            habitData[key] = true;
-            localStorage.setItem("habitData", JSON.stringify(habitData));
-            renderHabits();
-          });
-          block.appendChild(logButton);
-
-          const yearRow = document.createElement("div");
-          yearRow.classList.add("year-row");
-
-          for (let month = 0; month < 12; month++) {
-            const monthDiv = document.createElement("div");
-            monthDiv.classList.add("month");
-
-            const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
-            const monthLabel = document.createElement("div");
-            monthLabel.classList.add("month-name");
-            monthLabel.textContent = monthName;
-            monthDiv.appendChild(monthLabel);
-
-            const heatmap = document.createElement("div");
-            heatmap.classList.add("heatmap");
-
-            const days = getDaysInMonth(month, year);
-            for (let day = 1; day <= days; day++) {
-              const date = new Date(year, month, day);
-              const key = `${habit}_${formatDate(date)}`;
-              const square = document.createElement("div");
-              square.classList.add("square");
-              if (habitData[key]) square.classList.add("active");
-              heatmap.appendChild(square);
+            function formatDate(date) {
+                return date.toISOString().split("T")[0];
             }
 
-            monthDiv.appendChild(heatmap);
-            yearRow.appendChild(monthDiv);
-          }
+            function getDaysInMonth(month, year) {
+                return new Date(year, month + 1, 0).getDate();
+            }
 
-          block.appendChild(yearRow);
-          container.appendChild(block);
-        });
+            function renderHabits() {
+                const container = document.getElementById("habits-container");
+                container.innerHTML = "";
+                const today = formatDate(new Date());
 
-        const user = auth.currentUser;
-        const showButtons = !!user;
-        document.querySelectorAll(".log-button").forEach((btn) => {
-          btn.style.display = showButtons ? "inline-block" : "none";
-        });
-      }
+                habits.forEach((habit) => {
+                const block = document.createElement("div");
+                block.classList.add("habit-block");
 
-      onAuthStateChanged(auth, (user) => {
-        document.getElementById("login-button").style.display = user ? "none" : "inline-block";
-        document.getElementById("logout-button").style.display = user ? "inline-block" : "none";
-        renderHabits();
-      });
+                const title = document.createElement("div");
+                title.classList.add("habit-title");
+                title.textContent = habit;
+                block.appendChild(title);
 
-      document.getElementById("login-button").addEventListener("click", () => {
-        signInWithPopup(auth, provider);
-      });
+                const logButton = document.createElement("button");
+                logButton.textContent = "Log Today";
+                logButton.classList.add("log-button");
+                logButton.style.display = "none";
+                logButton.addEventListener("click", () => {
+                    const key = `${habit}_${today}`;
+                    habitData[key] = true;
+                    localStorage.setItem("habitData", JSON.stringify(habitData));
+                    renderHabits();
+                });
+                block.appendChild(logButton);
 
-      document.getElementById("logout-button").addEventListener("click", () => {
-        signOut(auth);
-      });
+                const yearRow = document.createElement("div");
+                yearRow.classList.add("year-row");
 
-      renderHabits();
-    </script>
-  </body>
+                for (let month = 0; month < 12; month++) {
+                    const monthDiv = document.createElement("div");
+                    monthDiv.classList.add("month");
+
+                    const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
+                    const monthLabel = document.createElement("div");
+                    monthLabel.classList.add("month-name");
+                    monthLabel.textContent = monthName;
+                    monthDiv.appendChild(monthLabel);
+
+                    const heatmap = document.createElement("div");
+                    heatmap.classList.add("heatmap");
+
+                    const days = getDaysInMonth(month, year);
+                    for (let day = 1; day <= days; day++) {
+                    const date = new Date(year, month, day);
+                    const key = `${habit}_${formatDate(date)}`;
+                    const square = document.createElement("div");
+                    square.classList.add("square");
+                    if (habitData[key]) square.classList.add("active");
+                    heatmap.appendChild(square);
+                    }
+
+                    monthDiv.appendChild(heatmap);
+                    yearRow.appendChild(monthDiv);
+                }
+
+                block.appendChild(yearRow);
+                container.appendChild(block);
+                });
+
+                const user = auth.currentUser;
+                const showButtons = !!user;
+                document.querySelectorAll(".log-button").forEach((btn) => {
+                btn.style.display = showButtons ? "inline-block" : "none";
+                });
+            }
+
+            onAuthStateChanged(auth, (user) => {
+                document.getElementById("login-button").style.display = user ? "none" : "inline-block";
+                document.getElementById("logout-button").style.display = user ? "inline-block" : "none";
+                renderHabits();
+            });
+
+            document.getElementById("login-button").addEventListener("click", () => {
+                signInWithPopup(auth, provider);
+            });
+
+            document.getElementById("logout-button").addEventListener("click", () => {
+                signOut(auth);
+            });
+
+            renderHabits();
+        </script>
+    </body>
 </html>
