@@ -2,7 +2,10 @@ body {
   font-family: system-ui, sans-serif;
   background-color: #F9FAFB;
   color: #222;
-  padding: 10rem;
+  padding-bottom: 10rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
+  padding-top: 5rem;
   margin: 0;
 }
 
