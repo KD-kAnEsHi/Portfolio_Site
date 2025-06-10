@@ -2,18 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Photo Blog - Karl Azangue</title>
+    <title>Photo Blog</title>
     <link rel="shortcut icon" href="../../images/alone.ico" type="image/x-icon">
     <link rel="icon" href="../../images/alone.ico" type="image/x-icon">
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
-    <script src="script.js" defer></script>
     <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <header>
         <h1>Projects Building Vlogs</h1>
-        <div class="upload-controls">
+        <div id="auth-controls">
+            <button id="login-button">Admin Login</button>
+            <button id="logout-button" style="display: none">Logout</button>
+        </div>
+        <div class="upload-controls" style="display: none">
             <button onclick="openUploadWidget('life')">Upload to Life</button>
             <button onclick="openUploadWidget('tech')">Upload to Tech</button>
         </div>
@@ -32,9 +35,97 @@
 
         <section>
             <h2>Tech</h2>
-            <div id="tech-gallery" class="gallery"></div> 
+            <div id="tech-gallery" class="gallery"></div>
         </section>
     </main>
+
     <p><a href="../../index.html">← Back to Blog Posts</a></p>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+        import {
+            getAuth,
+            signInWithPopup,
+            GoogleAuthProvider,
+            signOut,
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
+            authDomain: "habit-tracker-37f97.firebaseapp.com",
+            projectId: "habit-tracker-37f97",
+            storageBucket: "habit-tracker-37f97.appspot.com",
+            messagingSenderId: "992883008825",
+            appId: "1:992883008825:web:1b7d42f3b0b0dbf90234e8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const adminEmail = "karl.demanou@gmail.com"; // Replace with your actual admin email
+
+        document.getElementById("login-button").addEventListener("click", () => signInWithPopup(auth, provider));
+        document.getElementById("logout-button").addEventListener("click", () => signOut(auth));
+
+        onAuthStateChanged(auth, user => {
+            const isAdmin = user && user.email === adminEmail;
+            document.getElementById("login-button").style.display = isAdmin ? "none" : "inline-block";
+            document.getElementById("logout-button").style.display = isAdmin ? "inline-block" : "none";
+            document.querySelector(".upload-controls").style.display = isAdmin ? "block" : "none";
+        });
+
+        const cloudName = 'dgazqsk1o'; 
+        const uploadPreset = 'blog_upload'; 
+
+        window.openUploadWidget = function (category) {
+            cloudinary.openUploadWidget({
+                cloudName,
+                uploadPreset,
+                sources: ['local', 'url', 'camera'],
+                multiple: false,
+                cropping: false,
+                tags: [category]
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    const imageUrl = result.info.secure_url;
+                    const targetDiv = document.getElementById(`${category}-gallery`);
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = "Uploaded image";
+                    img.className = "uploaded-image";
+                    targetDiv.prepend(img);
+                } else if (error) {
+                    console.error("Upload failed:", error);
+                }
+            });
+        }
+
+        function loadImagesByTag(tag, containerId) {
+            const gallery = document.getElementById(containerId);
+            const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    data.resources.forEach(item => {
+                        const img = document.createElement("img");
+                        img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
+                        img.alt = "Gallery image";
+                        img.className = "uploaded-image";
+                        gallery.appendChild(img);
+                    });
+                })
+                .catch(error => {
+                    console.warn(`Could not load ${tag} images:`, error);
+                });
+        }
+
+        window.onload = () => {
+            loadImagesByTag('life', 'life-gallery');
+            loadImagesByTag('tech', 'tech-gallery');
+        };
+    </script>
 </body>
 </html>
