@@ -121,6 +121,7 @@
     }
 
     onAuthStateChanged(auth, (user) => {
+      console.log("Auth user:", user);
       const isAdmin = user && user.email === adminEmail;
 
       if (user && !isAdmin) {
