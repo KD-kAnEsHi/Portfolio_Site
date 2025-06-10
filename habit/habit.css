@@ -88,3 +88,24 @@ button {
   flex-direction: center;
   text-align: center;
 }
+
+
+/* Back link */
+.footer-link {
+    margin-top: 2rem;
+}
+
+.footer-link a {
+    color: #888;
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 0.9rem;
+    text-decoration: none;
+
+}
+
+.footer-link a:hover {
+    text-decoration: none;
+    color: #000;
+}
