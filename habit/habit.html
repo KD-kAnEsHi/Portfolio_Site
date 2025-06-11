@@ -9,11 +9,20 @@
         <link rel="stylesheet" href="habit.css" />
     </head>
     <body>
-        <h1>Habit Tracker</h1>
-        <div id="habits-container"></div>
-        <div id="auth-controls">
-            <button id="login-button">Admin Login</button>
-            <button id="logout-button" style="display: none">Logout</button>
+        <div class="container">
+            <header class="header">
+                <h1>Habit Tracker</h1>
+                <div class="auth-controls">
+                    <button id="login-button" class="auth-button">Admin Login</button>
+                    <button id="logout-button" class="auth-button logout" style="display: none">Logout</button>
+                </div>
+            </header>
+
+            <main id="habits-container" class="habits-grid"></main>
+
+            <footer class="footer">
+                <a href="../index.html" class="back-link">← Back to home</a>
+            </footer>
         </div>
 
         <script type="module">
@@ -73,21 +82,21 @@
             function updateHabitBlock(block, habit) {
             const year = new Date().getFullYear();
             const today = formatDate(new Date());
-            const existing = block.querySelector(".year-row");
+            const existing = block.querySelector(".year-display");
             if (existing) existing.remove();
 
-            const yearRow = document.createElement("div");
-            yearRow.classList.add("year-row");
+            const yearDisplay = document.createElement("div");
+            yearDisplay.classList.add("year-display");
 
             for (let month = 0; month < 12; month++) {
-                const monthDiv = document.createElement("div");
-                monthDiv.classList.add("month");
+                const monthCard = document.createElement("div");
+                monthCard.classList.add("month-card");
 
                 const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
                 const monthLabel = document.createElement("div");
-                monthLabel.classList.add("month-name");
+                monthLabel.classList.add("month-label");
                 monthLabel.textContent = monthName;
-                monthDiv.appendChild(monthLabel);
+                monthCard.appendChild(monthLabel);
 
                 const heatmap = document.createElement("div");
                 heatmap.classList.add("heatmap");
@@ -97,16 +106,16 @@
                 const date = new Date(year, month, day);
                 const key = `${habit}_${formatDate(date)}`;
                 const square = document.createElement("div");
-                square.classList.add("square");
-                if (habitData[key]) square.classList.add("active");
+                square.classList.add("day-square");
+                if (habitData[key]) square.classList.add("completed");
                 heatmap.appendChild(square);
                 }
 
-                monthDiv.appendChild(heatmap);
-                yearRow.appendChild(monthDiv);
+                monthCard.appendChild(heatmap);
+                yearDisplay.appendChild(monthCard);
             }
 
-            block.appendChild(yearRow);
+            block.appendChild(yearDisplay);
             }
 
             function renderHabits() {
@@ -116,15 +125,13 @@
             const user = auth.currentUser;
 
             habits.forEach(habit => {
-                const block = document.createElement("div");
-                block.classList.add("habit-block");
+                const habitCard = document.createElement("div");
+                habitCard.classList.add("habit-card");
 
-                const topRow = document.createElement("div");
-                topRow.style.display = "flex";
-                topRow.style.justifyContent = "space-between";
-                topRow.style.alignItems = "center";
+                const cardHeader = document.createElement("div");
+                cardHeader.classList.add("card-header");
 
-                const title = document.createElement("div");
+                const title = document.createElement("h2");
                 title.classList.add("habit-title");
                 title.textContent = habit;
 
@@ -137,31 +144,37 @@
                 const key = `${habit}_${today}`;
                 if (habitData[key]) {
                     delete habitData[key];
+                    logButton.textContent = "Log Today";
                 } else {
                     habitData[key] = true;
+                    logButton.textContent = "Logged ✓";
                 }
                 localStorage.setItem("habitData", JSON.stringify(habitData));
-                updateHabitBlock(block, habit);
+                updateHabitBlock(habitCard, habit);
                 });
 
-                topRow.appendChild(title);
-                topRow.appendChild(logButton);
-                block.appendChild(topRow);
+                // Check if today is already logged
+                const todayKey = `${habit}_${today}`;
+                if (habitData[todayKey]) {
+                    logButton.textContent = "Logged ✓";
+                }
 
-                updateHabitBlock(block, habit);
-                container.appendChild(block);
+                cardHeader.appendChild(title);
+                cardHeader.appendChild(logButton);
+                habitCard.appendChild(cardHeader);
+
+                updateHabitBlock(habitCard, habit);
+                container.appendChild(habitCard);
 
                 if (user) {
                 checkAdmin(user.email).then(isAdmin => {
-                    logButton.style.display = isAdmin ? "inline-block" : "none";
+                    logButton.style.display = isAdmin ? "block" : "none";
                 });
                 }
             });
             }
 
             onAuthStateChanged(auth, async (user) => {
-            console.log("Auth user:", user);
-
             if (user) {
                 const isAdmin = await checkAdmin(user.email);
                 if (!isAdmin) {
@@ -192,7 +205,5 @@
 
             renderHabits();
         </script>
-
-        <p class="footer-link"><a href="../index.html">← Back to home</a></p>
     </body>
 </html>
