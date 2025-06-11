@@ -91,10 +91,14 @@
         logButton.classList.add("log-button");
         logButton.style.display = "none";
         logButton.addEventListener("click", () => {
-          const key = `${habit}_${today}`;
-          habitData[key] = true;
-          localStorage.setItem("habitData", JSON.stringify(habitData));
-          renderHabits();
+            const key = `${habit}_${today}`;
+            if (habitData[key]) {
+                delete habitData[key];  
+            } else {
+                habitData[key] = true;  
+            }
+            localStorage.setItem("habitData", JSON.stringify(habitData));
+            renderHabits();
         });
         block.appendChild(logButton);
 
@@ -127,9 +131,8 @@
           monthDiv.appendChild(heatmap);
           yearRow.appendChild(monthDiv);
         }
-
-        block.appendChild(yearRow);
         container.appendChild(block);
+        block.appendChild(yearRow);
       });
 
       // Show log buttons only if current user is admin
