@@ -33,11 +33,29 @@ function loadImagesByTag(tag, containerId) {
     const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
 
     fetch(url)
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) throw new Error("Failed to fetch images");
+            return response.json();
+        })
         .then(data => {
-            data.resources.forEach(item => {
+            if (!data.resources || !Array.isArray(data.resources)) {
+                throw new Error("Invalid image data");
+            }
+
+            // limit to first 20 images max 
+            const safeImages = data.resources.slice(0, 20);
+
+            safeImages.forEach(item => {
+                const { public_id, format } = item;
+
+                // validate format: only allow common image types
+                const allowedFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+                if (!allowedFormats.includes(format)) return;
+
+                if (!/^[\w-]+$/.test(public_id)) return;
+
                 const img = document.createElement("img");
-                img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
+                img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${public_id}.${format}`;
                 img.alt = "Gallery image";
                 img.className = "uploaded-image";
                 gallery.appendChild(img);
@@ -47,6 +65,7 @@ function loadImagesByTag(tag, containerId) {
             console.warn(`Could not load ${tag} images:`, error);
         });
 }
+
 
 window.onload = () => {
     loadImagesByTag('life', 'life-gallery');
