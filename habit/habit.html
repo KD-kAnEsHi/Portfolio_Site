@@ -1,198 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="../../images/alone.ico" type="image/x-icon" />
-  <link rel="icon" href="../../images/alone.ico" type="image/x-icon" />
-  <title>Habit Tracker - Karl Azangue</title>
-  <link rel="stylesheet" href="habit.css" />
-</head>
-<body>
-  <h1>Habit Tracker</h1>
-  <div id="habits-container"></div>
-  <div id="auth-controls">
-    <button id="login-button">Admin Login</button>
-    <button id="logout-button" style="display: none">Logout</button>
-  </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="../images/alone.ico" type="image/x-icon">
+        <link rel="icon" href="../images/alone.ico" type="image/x-icon">
+        <title>Habit Tracker - Karl Azangue</title>
+        <link rel="stylesheet" href="habit.css" />
+    </head>
+    <body>
+        <h1>Habit Tracker</h1>
+        <div id="habits-container"></div>
+        <div id="auth-controls">
+            <button id="login-button">Admin Login</button>
+            <button id="logout-button" style="display: none">Logout</button>
+        </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-    import {
-      getAuth,
-      signInWithPopup,
-      GoogleAuthProvider,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+            import {
+            getAuth,
+            signInWithPopup,
+            GoogleAuthProvider,
+            signOut,
+            onAuthStateChanged
+            } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
 
-    import {
-      getFirestore,
-      doc,
-      getDoc
-    } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+            import {
+            getFirestore,
+            doc,
+            getDoc
+            } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
-      authDomain: "habit-tracker-37f97.firebaseapp.com",
-      projectId: "habit-tracker-37f97",
-      storageBucket: "habit-tracker-37f97.appspot.com",
-      messagingSenderId: "992883008825",
-      appId: "1:992883008825:web:1b7d42f3b0b0dbf90234e8",
-      measurementId: "G-50R2XSXN2G"
-    };
+            const firebaseConfig = {
+            apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
+            authDomain: "habit-tracker-37f97.firebaseapp.com",
+            projectId: "habit-tracker-37f97",
+            storageBucket: "habit-tracker-37f97.appspot.com",
+            messagingSenderId: "992883008825",
+            appId: "1:992883008825:web:1b7d42f3b0b0dbf90234e8",
+            measurementId: "G-50R2XSXN2G"
+            };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-    const db = getFirestore(app);
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const provider = new GoogleAuthProvider();
+            const db = getFirestore(app);
 
-    async function checkAdmin(email) {
-      if (!email) return false;
-      try {
-        const docRef = doc(db, "admins", email);
-        const docSnap = await getDoc(docRef);
-        return docSnap.exists();
-      } catch (e) {
-        console.error("Error checking admin status:", e);
-        return false;
-      }
-    }
+            async function checkAdmin(email) {
+            if (!email) return false;
+            try {
+                const docRef = doc(db, "admins", email);
+                const docSnap = await getDoc(docRef);
+                return docSnap.exists();
+            } catch (e) {
+                console.error("Error checking admin status:", e);
+                return false;
+            }
+            }
 
-    let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
-    const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
+            let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
+            const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
 
-    function formatDate(date) {
-      return date.toISOString().split("T")[0];
-    }
+            function formatDate(date) {
+            return date.toISOString().split("T")[0];
+            }
 
-    function getDaysInMonth(month, year) {
-      return new Date(year, month + 1, 0).getDate();
-    }
+            function getDaysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+            }
 
-    function updateHabitBlock(block, habit) {
-      const year = new Date().getFullYear();
-      const today = formatDate(new Date());
-      const existing = block.querySelector(".year-row");
-      if (existing) existing.remove();
+            function updateHabitBlock(block, habit) {
+            const year = new Date().getFullYear();
+            const today = formatDate(new Date());
+            const existing = block.querySelector(".year-row");
+            if (existing) existing.remove();
 
-      const yearRow = document.createElement("div");
-      yearRow.classList.add("year-row");
+            const yearRow = document.createElement("div");
+            yearRow.classList.add("year-row");
 
-      for (let month = 0; month < 12; month++) {
-        const monthDiv = document.createElement("div");
-        monthDiv.classList.add("month");
+            for (let month = 0; month < 12; month++) {
+                const monthDiv = document.createElement("div");
+                monthDiv.classList.add("month");
 
-        const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
-        const monthLabel = document.createElement("div");
-        monthLabel.classList.add("month-name");
-        monthLabel.textContent = monthName;
-        monthDiv.appendChild(monthLabel);
+                const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
+                const monthLabel = document.createElement("div");
+                monthLabel.classList.add("month-name");
+                monthLabel.textContent = monthName;
+                monthDiv.appendChild(monthLabel);
 
-        const heatmap = document.createElement("div");
-        heatmap.classList.add("heatmap");
+                const heatmap = document.createElement("div");
+                heatmap.classList.add("heatmap");
 
-        const days = getDaysInMonth(month, year);
-        for (let day = 1; day <= days; day++) {
-          const date = new Date(year, month, day);
-          const key = `${habit}_${formatDate(date)}`;
-          const square = document.createElement("div");
-          square.classList.add("square");
-          if (habitData[key]) square.classList.add("active");
-          heatmap.appendChild(square);
-        }
+                const days = getDaysInMonth(month, year);
+                for (let day = 1; day <= days; day++) {
+                const date = new Date(year, month, day);
+                const key = `${habit}_${formatDate(date)}`;
+                const square = document.createElement("div");
+                square.classList.add("square");
+                if (habitData[key]) square.classList.add("active");
+                heatmap.appendChild(square);
+                }
 
-        monthDiv.appendChild(heatmap);
-        yearRow.appendChild(monthDiv);
-      }
+                monthDiv.appendChild(heatmap);
+                yearRow.appendChild(monthDiv);
+            }
 
-      block.appendChild(yearRow);
-    }
+            block.appendChild(yearRow);
+            }
 
-    function renderHabits() {
-      const container = document.getElementById("habits-container");
-      container.innerHTML = "";
-      const today = formatDate(new Date());
-      const user = auth.currentUser;
+            function renderHabits() {
+            const container = document.getElementById("habits-container");
+            container.innerHTML = "";
+            const today = formatDate(new Date());
+            const user = auth.currentUser;
 
-      habits.forEach(habit => {
-        const block = document.createElement("div");
-        block.classList.add("habit-block");
+            habits.forEach(habit => {
+                const block = document.createElement("div");
+                block.classList.add("habit-block");
 
-        const topRow = document.createElement("div");
-        topRow.style.display = "flex";
-        topRow.style.justifyContent = "space-between";
-        topRow.style.alignItems = "center";
+                const topRow = document.createElement("div");
+                topRow.style.display = "flex";
+                topRow.style.justifyContent = "space-between";
+                topRow.style.alignItems = "center";
 
-        const title = document.createElement("div");
-        title.classList.add("habit-title");
-        title.textContent = habit;
+                const title = document.createElement("div");
+                title.classList.add("habit-title");
+                title.textContent = habit;
 
-        const logButton = document.createElement("button");
-        logButton.textContent = "Log Today";
-        logButton.classList.add("log-button");
-        logButton.style.display = "none";
+                const logButton = document.createElement("button");
+                logButton.textContent = "Log Today";
+                logButton.classList.add("log-button");
+                logButton.style.display = "none";
 
-        logButton.addEventListener("click", () => {
-          const key = `${habit}_${today}`;
-          if (habitData[key]) {
-            delete habitData[key];
-          } else {
-            habitData[key] = true;
-          }
-          localStorage.setItem("habitData", JSON.stringify(habitData));
-          updateHabitBlock(block, habit);
-        });
+                logButton.addEventListener("click", () => {
+                const key = `${habit}_${today}`;
+                if (habitData[key]) {
+                    delete habitData[key];
+                } else {
+                    habitData[key] = true;
+                }
+                localStorage.setItem("habitData", JSON.stringify(habitData));
+                updateHabitBlock(block, habit);
+                });
 
-        topRow.appendChild(title);
-        topRow.appendChild(logButton);
-        block.appendChild(topRow);
+                topRow.appendChild(title);
+                topRow.appendChild(logButton);
+                block.appendChild(topRow);
 
-        updateHabitBlock(block, habit);
-        container.appendChild(block);
+                updateHabitBlock(block, habit);
+                container.appendChild(block);
 
-        if (user) {
-          checkAdmin(user.email).then(isAdmin => {
-            logButton.style.display = isAdmin ? "inline-block" : "none";
-          });
-        }
-      });
-    }
+                if (user) {
+                checkAdmin(user.email).then(isAdmin => {
+                    logButton.style.display = isAdmin ? "inline-block" : "none";
+                });
+                }
+            });
+            }
 
-    onAuthStateChanged(auth, async (user) => {
-      console.log("Auth user:", user);
+            onAuthStateChanged(auth, async (user) => {
+            console.log("Auth user:", user);
 
-      if (user) {
-        const isAdmin = await checkAdmin(user.email);
-        if (!isAdmin) {
-          alert("Access denied. Only the admin can log in.");
-          signOut(auth);
-          document.getElementById("login-button").style.display = "inline-block";
-          document.getElementById("logout-button").style.display = "none";
-          renderHabits();
-          return;
-        }
-        document.getElementById("login-button").style.display = "none";
-        document.getElementById("logout-button").style.display = "inline-block";
-      } else {
-        document.getElementById("login-button").style.display = "inline-block";
-        document.getElementById("logout-button").style.display = "none";
-      }
+            if (user) {
+                const isAdmin = await checkAdmin(user.email);
+                if (!isAdmin) {
+                alert("Access denied. Only the admin can log in.");
+                signOut(auth);
+                document.getElementById("login-button").style.display = "inline-block";
+                document.getElementById("logout-button").style.display = "none";
+                renderHabits();
+                return;
+                }
+                document.getElementById("login-button").style.display = "none";
+                document.getElementById("logout-button").style.display = "inline-block";
+            } else {
+                document.getElementById("login-button").style.display = "inline-block";
+                document.getElementById("logout-button").style.display = "none";
+            }
 
-      renderHabits();
-    });
+            renderHabits();
+            });
 
-    document.getElementById("login-button").addEventListener("click", () => {
-      signInWithPopup(auth, provider);
-    });
+            document.getElementById("login-button").addEventListener("click", () => {
+            signInWithPopup(auth, provider);
+            });
 
-    document.getElementById("logout-button").addEventListener("click", () => {
-      signOut(auth);
-    });
+            document.getElementById("logout-button").addEventListener("click", () => {
+            signOut(auth);
+            });
 
-    renderHabits();
-  </script>
+            renderHabits();
+        </script>
 
-  <p class="footer-link"><a href="../index.html">← Back to home</a></p>
-</body>
+        <p class="footer-link"><a href="../index.html">← Back to home</a></p>
+    </body>
 </html>
