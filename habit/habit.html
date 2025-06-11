@@ -47,7 +47,6 @@
     const provider = new GoogleAuthProvider();
     const db = getFirestore(app);
 
-    // Check if email exists in Firestore "admins" collection
     async function checkAdmin(email) {
       if (!email) return false;
       try {
@@ -62,7 +61,6 @@
 
     let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
     const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
-    const year = new Date().getFullYear();
 
     function formatDate(date) {
       return date.toISOString().split("T")[0];
@@ -72,79 +70,92 @@
       return new Date(year, month + 1, 0).getDate();
     }
 
+    function updateHabitBlock(block, habit) {
+      const year = new Date().getFullYear();
+      const today = formatDate(new Date());
+      const existing = block.querySelector(".year-row");
+      if (existing) existing.remove();
+
+      const yearRow = document.createElement("div");
+      yearRow.classList.add("year-row");
+
+      for (let month = 0; month < 12; month++) {
+        const monthDiv = document.createElement("div");
+        monthDiv.classList.add("month");
+
+        const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
+        const monthLabel = document.createElement("div");
+        monthLabel.classList.add("month-name");
+        monthLabel.textContent = monthName;
+        monthDiv.appendChild(monthLabel);
+
+        const heatmap = document.createElement("div");
+        heatmap.classList.add("heatmap");
+
+        const days = getDaysInMonth(month, year);
+        for (let day = 1; day <= days; day++) {
+          const date = new Date(year, month, day);
+          const key = `${habit}_${formatDate(date)}`;
+          const square = document.createElement("div");
+          square.classList.add("square");
+          if (habitData[key]) square.classList.add("active");
+          heatmap.appendChild(square);
+        }
+
+        monthDiv.appendChild(heatmap);
+        yearRow.appendChild(monthDiv);
+      }
+
+      block.appendChild(yearRow);
+    }
+
     function renderHabits() {
       const container = document.getElementById("habits-container");
       container.innerHTML = "";
       const today = formatDate(new Date());
+      const user = auth.currentUser;
 
       habits.forEach(habit => {
         const block = document.createElement("div");
         block.classList.add("habit-block");
 
+        const topRow = document.createElement("div");
+        topRow.style.display = "flex";
+        topRow.style.justifyContent = "space-between";
+        topRow.style.alignItems = "center";
+
         const title = document.createElement("div");
         title.classList.add("habit-title");
         title.textContent = habit;
-        block.appendChild(title);
 
         const logButton = document.createElement("button");
         logButton.textContent = "Log Today";
         logButton.classList.add("log-button");
         logButton.style.display = "none";
+
         logButton.addEventListener("click", () => {
-            const key = `${habit}_${today}`;
-            if (habitData[key]) {
-                delete habitData[key];  
-            } else {
-                habitData[key] = true;  
-            }
-            localStorage.setItem("habitData", JSON.stringify(habitData));
-            renderHabits();
-        });
-        block.appendChild(logButton);
-
-        const yearRow = document.createElement("div");
-        yearRow.classList.add("year-row");
-
-        for (let month = 0; month < 12; month++) {
-          const monthDiv = document.createElement("div");
-          monthDiv.classList.add("month");
-
-          const monthName = new Date(year, month).toLocaleString("default", { month: "short" });
-          const monthLabel = document.createElement("div");
-          monthLabel.classList.add("month-name");
-          monthLabel.textContent = monthName;
-          monthDiv.appendChild(monthLabel);
-
-          const heatmap = document.createElement("div");
-          heatmap.classList.add("heatmap");
-
-          const days = getDaysInMonth(month, year);
-          for (let day = 1; day <= days; day++) {
-            const date = new Date(year, month, day);
-            const key = `${habit}_${formatDate(date)}`;
-            const square = document.createElement("div");
-            square.classList.add("square");
-            if (habitData[key]) square.classList.add("active");
-            heatmap.appendChild(square);
+          const key = `${habit}_${today}`;
+          if (habitData[key]) {
+            delete habitData[key];
+          } else {
+            habitData[key] = true;
           }
-
-          monthDiv.appendChild(heatmap);
-          yearRow.appendChild(monthDiv);
-        }
-        container.appendChild(block);
-        block.appendChild(yearRow);
-      });
-
-      // Show log buttons only if current user is admin
-      const user = auth.currentUser;
-      if (!user) {
-        document.querySelectorAll(".log-button").forEach(btn => btn.style.display = "none");
-        return;
-      }
-      checkAdmin(user.email).then(isAdmin => {
-        document.querySelectorAll(".log-button").forEach(btn => {
-          btn.style.display = isAdmin ? "inline-block" : "none";
+          localStorage.setItem("habitData", JSON.stringify(habitData));
+          updateHabitBlock(block, habit);
         });
+
+        topRow.appendChild(title);
+        topRow.appendChild(logButton);
+        block.appendChild(topRow);
+
+        updateHabitBlock(block, habit);
+        container.appendChild(block);
+
+        if (user) {
+          checkAdmin(user.email).then(isAdmin => {
+            logButton.style.display = isAdmin ? "inline-block" : "none";
+          });
+        }
       });
     }
 
@@ -181,6 +192,7 @@
 
     renderHabits();
   </script>
+
   <p class="footer-link"><a href="../index.html">← Back to home</a></p>
 </body>
 </html>
