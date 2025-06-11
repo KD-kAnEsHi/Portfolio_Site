@@ -1,60 +1,84 @@
 <!DOCTYPE html>
-
-<html>
-    <head>
-        <title> Search - Karl Azangue</title>
-        <h1 class="title-logo">I AM HIM</h1>
-        <link rel="shortcut icon" href="../images/alone.ico" type="image/x-icon">
-        <link rel="icon" href="../images/alone.ico" type="image/x-icon">
-        <link rel="stylesheet" href="./search.css">
-        <script src="./frontend.js" defer></script>    
-    </head>
-    
-
-    <body>
-
-        <!-- Sidebare of the page -->
-        <div id="sidebar"> 
-            <div>Home</div>
-            <div></div>
-            <div>Discover</div>
-            <div></div>
-            <div>Lock-In</div>
-            <div></div>
-            <button id="sidebar-toggle">|</button>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Karl Azangue</title>
+    <link rel="shortcut icon" href="../images/alone.ico" type="image/x-icon">
+    <link rel="icon" href="../images/alone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./search.css">
+    <script src="./frontend.js" defer></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="top-nav">
+        <div class="nav-left">
+            <h1 class="logo">Karl Azangue</h1>
         </div>
-
-
-
-        <!-- Menu -->
-        <div id="menu">
-            <a href="#">Demo</a>
-            <a href="#">Images</a>
-            <!-- <a href="#">Profile</a> !-->
+        <div class="nav-right">
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Demo</a>
+            <a href="../blocg/old_blog/index.html" class="nav-link">Images</a>
         </div>
+    </nav>
 
-        <!-- Text on sidebar -->
-        <div id="menace-text">Menace to Society</div>
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-text">
+                <h2 class="hero-title">IT'S TIME TO BUILD</h2>
+                <p class="hero-subtitle">Your Search Journey Begins Here</p>
+            </div>
+        </section>
 
-        <!-- Search Button Sections -->
-        <div class="search-container">
-            <form action="https://www.google.com/search" method="GET" class="search-bar">
-                <input type="text" name="q" placeholder="Your Villain Arc Begins Here" />
-                <button type="submit" class="search_button">Search</button>
-            </form>
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <form action="https://www.perplexity.ai/search" method="GET" class="search-form">
+                    <div class="search-bar">
+                        <input type="text" name="q" placeholder="Search anything..." class="search-input" />
+                        <button type="submit" class="search-button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="action-cards">
+                <div class="action-card">
+                    <h3>Discover</h3>
+                    <p>Explore new possibilities</p>
+                </div>
+                <div class="action-card">
+                    <h3>Lock-In</h3>
+                    <p>Focus on what matters</p>
+                </div>
+                <div class="action-card">
+                    <h3>Build</h3>
+                    <p>Create something amazing</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">All Rights Reserved</a>
+                <a href="../main/about/about.html" class="footer-link" target="_blank">About</a>
+                <a href="../main/faq/faq.html" class="footer-link" target="_blank">FAQ</a>
+                <a href="../index.html" class="footer-link">Site</a>
+                <a href="../blocg/blog.html" class="footer-link" target="_blank">Blog</a>
+                <a href="../main/contact/contact.html" class="footer-link" target="_blank">Contact</a>
+            </div>
         </div>
-
-        <!-- Footers Sections -->
-        <div id="footer">
-            <div class="line"> </div>
-            <a class = "buttom_link" href = "#">All Rights Reserves</a>
-            <a class = "buttom_link" target = "_blank" href = "../main/about/about.html">About</a>
-            <a class = "buttom_link" target = "_blank" href = "../main/faq/faq.html">Faq</a>
-            <a class = "buttom_link" href = "../index.html">Site</a>
-            <a class = "buttom_link" target = "_blank" href = "../blocg/blog.html">Blog</a>
-            <a class = "buttom_link" target = "_blank" href = "../main/contact/contact.html">Contact</a>
-        </div>
-    </body>
-
+    </footer>
+</body>
 </html>
-

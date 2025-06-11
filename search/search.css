@@ -1,204 +1,294 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/*Body of the prphram*/
 body {
-    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background-color: #F9FAFB;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navigation */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #111;
+}
+
+.nav-right {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background-color: #121212;
-    margin: 0;
-    transition: margin-left 0.3s; /* Smooth transition when sidebar opens/closes */
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
 }
 
-
-/* Title "I AM HIM" */
-.title-logo {
-    color: white;
-    font-size: 30px;
-    font-family: Arial;
-    font-weight: 1000;
-    position: fixed;
-    top: 25px;
-    left: 30px;
-    margin: 0;
-}
-
-
-/* Top-right menu styles */
-#menu {
-    position: fixed;
-    top: 15px;
-    right: 20px; /* Fix the menu to the top-right */
-    border-radius: 8px;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    z-index: 10; 
-    cursor: pointer;
-}
-
-#menu a {
-    color: white;
-    text-decoration: none;
-    margin-left: 15px;
-    font-size: 27px;
-    font-family: Arial, sans-serif;
-}
-
-/* Side Bar */
-#sidebar {
-    position: fixed;
-    border-radius: 3%;
-    top: 20%;
-    left: -10px;                 /* -160 Initially hidden to the left */
-    width: 180px;
-    height: 50%;
-    background-color: #36454F;
-    color: white;
-    padding-top: 100px;
-    /*transition: left 0.3s;      /* Transition for sliding in and out */
-    z-index: 1000; 
-}
-
-#sidebar div {
-    padding: 15px 22px;
-    text-decoration: none;
-    color: white;
-    display: flex;
-    font-size: 40px;
-}
-
-#sidebar div:hover {
-    background-color: #465862;
-    cursor: pointer;
-}
-
-/* Toggle button */
-#sidebar-toggle {
-    position: absolute;
-    bottom: -7px;
-    right: -7px;
-    background: transparent;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    z-index: 1100; /* Make sure toggle button is above sidebar */
-}
-
-#sidebar-toggle:hover {
-    color: #c5c5c5;
-    cursor: pointer;
-}
-
-
-/* Menace to society texts */
-#menace-text {
-    color: rgb(207, 207, 207);
-    position: absolute;
-    display: flex;
-    font-size: 50px;  /* Adjust the size as needed */
-    top: 37%;
-    font-weight: bold;
+/* Hero Section */
+.hero-section {
     text-align: center;
-    bottom: 20px;
-    z-index: 0;
-    margin-bottom: 20px; /* Space between the text and the search bar */
+    margin-bottom: 3rem;
 }
 
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
 
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 400;
+}
 
-
-
-
-/* Search Button, and container styles*/
-.search-container {
+/* Search Section */
+.search-section {
     width: 100%;
-    min-width: 100vh;
-    padding: 5%;
+    max-width: 600px;
+    margin-bottom: 4rem;
+}
+
+.search-container {
     display: flex;
-    height: 100%;
-    position: absolute;
-    align-items: center;
     justify-content: center;
+    padding: 0 2rem;
+}
+
+.search-form {
+    width: 100%;
 }
 
 .search-bar {
-    width: 100%;
-    max-width: 60%;
-    background: #36454F; /*#28282B;*/
     display: flex;
     align-items: center;
-    border-radius: 60px;
-    padding: 10px 20px;
-    overflow: visible;
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 50px;
+    padding: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
 }
 
-.search-bar input {
-    background: transparent;
+.search-bar:hover {
+    border-color: #D1D5DB;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+}
+
+.search-bar:focus-within {
+    border-color: #3B82F6;
+    box-shadow: 0 6px 25px rgba(59, 130, 246, 0.15);
+}
+
+.search-input {
     flex: 1;
-    border: 0;
+    border: none;
     outline: none;
-    padding: 24px 20px;
-    font-size: 20px;
-    color: #b8b8b8;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    background: transparent;
+    color: #333;
 }
 
-.search_button {
-    border: 0;
+.search-input::placeholder {
+    color: #9CA3AF;
+}
+
+.search-button {
+    background: #111;
+    border: none;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    cursor: pointer;
-    background-color: #757575;
-    cursor: pointer;
-}
-
-.search_button:hover {
-    background-color: #acacac;
-    cursor: pointer;
-}
-
-
-::placeholder {
-    color: rgb(131, 131, 131);
-}
-
-
-
-
-
-
-/* Links at the bottom of the page */
-#footer {  
+    width: 50px;
+    height: 50px;
     display: flex;
-    justify-content: center;  
-    margin-bottom: 0px;
-    margin-top: auto;
-    padding: 10px 30px 10px 95px;
-    position: relative;
-    z-index: 0;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
 }
 
-.buttom_link {    
+.search-button:hover {
+    background: #374151;
+    transform: scale(1.05);
+}
+
+.search-button:active {
+    transform: scale(0.95);
+}
+
+/* Quick Actions */
+.quick-actions {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 4rem;
+}
+
+.action-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 0 2rem;
+}
+
+.action-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
     text-align: center;
-    margin-right: 40px;
-    color: rgb(131, 131, 131);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
     cursor: pointer;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.action-card h3 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #111;
+    margin-bottom: 0.5rem;
+}
+
+.action-card p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Footer */
+.footer {
+    background: white;
+    border-top: 1px solid #E5E7EB;
+    padding: 2rem 0;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.footer-link {
+    color: #6B7280;
     text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
 }
 
-.buttom_link:hover {
-    text-decoration: underline;
-    cursor: pointer;
+.footer-link:hover {
+    color: #111;
 }
 
-/*
-.buttom_link:visited {
-    color: royalblue;
-    text-decoration: underline;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .top-nav {
+        padding: 1rem;
+    }
+    
+    .nav-right {
+        gap: 1rem;
+    }
+    
+    .nav-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .search-input {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .search-button {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .action-cards {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+    }
+    
+    .footer-links {
+        gap: 1rem;
+        font-size: 0.8rem;
+    }
 }
-*/
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .search-container {
+        padding: 0 1rem;
+    }
+}
