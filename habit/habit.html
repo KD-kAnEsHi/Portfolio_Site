@@ -26,6 +26,12 @@
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
 
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
       authDomain: "habit-tracker-37f97.firebaseapp.com",
@@ -39,7 +45,20 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const adminEmail = "karl.demanou@gmail.com";
+    const db = getFirestore(app);
+
+    // Check if email exists in Firestore "admins" collection
+    async function checkAdmin(email) {
+      if (!email) return false;
+      try {
+        const docRef = doc(db, "admins", email);
+        const docSnap = await getDoc(docRef);
+        return docSnap.exists();
+      } catch (e) {
+        console.error("Error checking admin status:", e);
+        return false;
+      }
+    }
 
     let habitData = JSON.parse(localStorage.getItem("habitData")) || {};
     const habits = ["GYM - 2Hours", "Coding - 5hours", "120g Protein", "Under 1500 Calories"];
@@ -113,24 +132,39 @@
         container.appendChild(block);
       });
 
+      // Show log buttons only if current user is admin
       const user = auth.currentUser;
-      const isAdmin = user && user.email === adminEmail;
-      document.querySelectorAll(".log-button").forEach(btn => {
-        btn.style.display = isAdmin ? "inline-block" : "none";
+      if (!user) {
+        document.querySelectorAll(".log-button").forEach(btn => btn.style.display = "none");
+        return;
+      }
+      checkAdmin(user.email).then(isAdmin => {
+        document.querySelectorAll(".log-button").forEach(btn => {
+          btn.style.display = isAdmin ? "inline-block" : "none";
+        });
       });
     }
 
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       console.log("Auth user:", user);
-      const isAdmin = user && user.email === adminEmail;
 
-      if (user && !isAdmin) {
-        signOut(auth);
-        alert("Access denied. Only the admin can log in.");
+      if (user) {
+        const isAdmin = await checkAdmin(user.email);
+        if (!isAdmin) {
+          alert("Access denied. Only the admin can log in.");
+          signOut(auth);
+          document.getElementById("login-button").style.display = "inline-block";
+          document.getElementById("logout-button").style.display = "none";
+          renderHabits();
+          return;
+        }
+        document.getElementById("login-button").style.display = "none";
+        document.getElementById("logout-button").style.display = "inline-block";
+      } else {
+        document.getElementById("login-button").style.display = "inline-block";
+        document.getElementById("logout-button").style.display = "none";
       }
 
-      document.getElementById("login-button").style.display = isAdmin ? "none" : "inline-block";
-      document.getElementById("logout-button").style.display = isAdmin ? "inline-block" : "none";
       renderHabits();
     });
 
