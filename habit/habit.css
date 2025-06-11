@@ -15,7 +15,7 @@ h1 {
   font-size: 3rem;
 }
 
-habit-block {
+.habit-block {
   position: relative; 
   margin-bottom: 2rem;
   padding-bottom: 2.5rem; 
