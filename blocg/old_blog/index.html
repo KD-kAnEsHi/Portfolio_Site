@@ -63,69 +63,79 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
+        const adminEmail = "karl.demanou@gmail.com";
+        const cloudName = 'dgazqsk1o';
+        const uploadPreset = 'blog_upload';
 
-        const adminEmail = "karl.demanou@gmail.com"; // Replace with your actual admin email
+        window.addEventListener("DOMContentLoaded", () => {
+            const loginBtn = document.getElementById("login-button");
+            const logoutBtn = document.getElementById("logout-button");
+            const uploadControls = document.querySelector(".upload-controls");
 
-        document.getElementById("login-button").addEventListener("click", () => signInWithPopup(auth, provider));
-        document.getElementById("logout-button").addEventListener("click", () => signOut(auth));
-
-        onAuthStateChanged(auth, user => {
-            const isAdmin = user && user.email === adminEmail;
-            document.getElementById("login-button").style.display = isAdmin ? "none" : "inline-block";
-            document.getElementById("logout-button").style.display = isAdmin ? "inline-block" : "none";
-            document.querySelector(".upload-controls").style.display = isAdmin ? "block" : "none";
-        });
-
-        const cloudName = 'dgazqsk1o'; 
-        const uploadPreset = 'blog_upload'; 
-
-        window.openUploadWidget = function (category) {
-            cloudinary.openUploadWidget({
-                cloudName,
-                uploadPreset,
-                sources: ['local', 'url', 'camera'],
-                multiple: false,
-                cropping: false,
-                tags: [category]
-            }, (error, result) => {
-                if (!error && result && result.event === "success") {
-                    const imageUrl = result.info.secure_url;
-                    const targetDiv = document.getElementById(`${category}-gallery`);
-                    const img = document.createElement("img");
-                    img.src = imageUrl;
-                    img.alt = "Uploaded image";
-                    img.className = "uploaded-image";
-                    targetDiv.prepend(img);
-                } else if (error) {
-                    console.error("Upload failed:", error);
-                }
+            loginBtn.addEventListener("click", () => {
+                signInWithPopup(auth, provider).catch(err => console.error("Login error:", err));
             });
-        }
 
-        function loadImagesByTag(tag, containerId) {
-            const gallery = document.getElementById(containerId);
-            const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
+            logoutBtn.addEventListener("click", () => {
+                signOut(auth).catch(err => console.error("Logout error:", err));
+            });
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    data.resources.forEach(item => {
+            onAuthStateChanged(auth, (user) => {
+                console.log("Auth state changed:", user?.email || "not logged in");
+                const isAdmin = user && user.email === adminEmail;
+
+                loginBtn.style.display = isAdmin ? "none" : "inline-block";
+                logoutBtn.style.display = isAdmin ? "inline-block" : "none";
+                uploadControls.style.display = isAdmin ? "block" : "none";
+            });
+
+            window.openUploadWidget = function (category) {
+                cloudinary.openUploadWidget({
+                    cloudName,
+                    uploadPreset,
+                    sources: ['local', 'url', 'camera'],
+                    multiple: false,
+                    cropping: false,
+                    tags: [category]
+                }, (error, result) => {
+                    console.log("Upload result:", result);
+                    if (!error && result && result.event === "success") {
+                        const imageUrl = result.info.secure_url;
+                        const targetDiv = document.getElementById(`${category}-gallery`);
                         const img = document.createElement("img");
-                        img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
-                        img.alt = "Gallery image";
+                        img.src = imageUrl;
+                        img.alt = "Uploaded image";
                         img.className = "uploaded-image";
-                        gallery.appendChild(img);
-                    });
-                })
-                .catch(error => {
-                    console.warn(`Could not load ${tag} images:`, error);
+                        targetDiv.prepend(img);
+                    } else if (error) {
+                        console.error("Upload failed:", error);
+                    }
                 });
-        }
+            };
 
-        window.onload = () => {
+            function loadImagesByTag(tag, containerId) {
+                const gallery = document.getElementById(containerId);
+                const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.resources.forEach(item => {
+                            const img = document.createElement("img");
+                            img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
+                            img.alt = "Gallery image";
+                            img.className = "uploaded-image";
+                            gallery.appendChild(img);
+                        });
+                    })
+                    .catch(error => {
+                        console.warn(`Could not load ${tag} images:`, error);
+                    });
+            }
+
             loadImagesByTag('life', 'life-gallery');
             loadImagesByTag('tech', 'tech-gallery');
-        };
+        });
     </script>
 </body>
 </html>
