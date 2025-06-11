@@ -50,6 +50,11 @@
             signOut,
             onAuthStateChanged
         } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+        import {
+            getFirestore,
+            doc,
+            getDoc
+        } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDuPhCCnsu1IFOKnt8PBfUIFahhOt6TYL0",
@@ -63,79 +68,94 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
-        const adminEmail = "petiendoh@gmail.com";
-        const cloudName = 'dgazqsk1o';
-        const uploadPreset = 'blog_upload';
+        const db = getFirestore(app);
 
-        window.addEventListener("DOMContentLoaded", () => {
-            const loginBtn = document.getElementById("login-button");
-            const logoutBtn = document.getElementById("logout-button");
-            const uploadControls = document.querySelector(".upload-controls");
-
-            loginBtn.addEventListener("click", () => {
-                signInWithPopup(auth, provider).catch(err => console.error("Login error:", err));
-            });
-
-            logoutBtn.addEventListener("click", () => {
-                signOut(auth).catch(err => console.error("Logout error:", err));
-            });
-
-            onAuthStateChanged(auth, (user) => {
-                console.log("Auth state changed:", user?.email || "not logged in");
-                const isAdmin = user && user.email === adminEmail;
-
-                loginBtn.style.display = isAdmin ? "none" : "inline-block";
-                logoutBtn.style.display = isAdmin ? "inline-block" : "none";
-                uploadControls.style.display = isAdmin ? "block" : "none";
-            });
-
-            window.openUploadWidget = function (category) {
-                cloudinary.openUploadWidget({
-                    cloudName,
-                    uploadPreset,
-                    sources: ['local', 'url', 'camera'],
-                    multiple: false,
-                    cropping: false,
-                    tags: [category]
-                }, (error, result) => {
-                    console.log("Upload result:", result);
-                    if (!error && result && result.event === "success") {
-                        const imageUrl = result.info.secure_url;
-                        const targetDiv = document.getElementById(`${category}-gallery`);
-                        const img = document.createElement("img");
-                        img.src = imageUrl;
-                        img.alt = "Uploaded image";
-                        img.className = "uploaded-image";
-                        targetDiv.prepend(img);
-                    } else if (error) {
-                        console.error("Upload failed:", error);
-                    }
-                });
-            };
-
-            function loadImagesByTag(tag, containerId) {
-                const gallery = document.getElementById(containerId);
-                const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
-
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        data.resources.forEach(item => {
-                            const img = document.createElement("img");
-                            img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
-                            img.alt = "Gallery image";
-                            img.className = "uploaded-image";
-                            gallery.appendChild(img);
-                        });
-                    })
-                    .catch(error => {
-                        console.warn(`Could not load ${tag} images:`, error);
-                    });
+        async function checkAdmin(email) {
+            if (!email) return false;
+            try {
+                const docRef = doc(db, "admins", email);
+                const docSnap = await getDoc(docRef);
+                return docSnap.exists();
+            } catch (e) {
+                console.error("Error checking admin status:", e);
+                return false;
             }
+        }
 
+        document.getElementById("login-button").addEventListener("click", () => signInWithPopup(auth, provider));
+        document.getElementById("logout-button").addEventListener("click", () => signOut(auth));
+
+        onAuthStateChanged(auth, async user => {
+            if (user) {
+                const isAdmin = await checkAdmin(user.email);
+                if (isAdmin) {
+                    document.getElementById("login-button").style.display = "none";
+                    document.getElementById("logout-button").style.display = "inline-block";
+                    document.querySelector(".upload-controls").style.display = "block";
+                } else {
+                    alert("Access denied: You are not an admin.");
+                    signOut(auth);
+                    document.getElementById("login-button").style.display = "inline-block";
+                    document.getElementById("logout-button").style.display = "none";
+                    document.querySelector(".upload-controls").style.display = "none";
+                }
+            } else {
+                document.getElementById("login-button").style.display = "inline-block";
+                document.getElementById("logout-button").style.display = "none";
+                document.querySelector(".upload-controls").style.display = "none";
+            }
+        });
+
+        const cloudName = 'dgazqsk1o'; 
+        const uploadPreset = 'blog_upload'; 
+
+        window.openUploadWidget = function (category) {
+            cloudinary.openUploadWidget({
+                cloudName,
+                uploadPreset,
+                sources: ['local', 'url', 'camera'],
+                multiple: false,
+                cropping: false,
+                tags: [category]
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    const imageUrl = result.info.secure_url;
+                    const targetDiv = document.getElementById(`${category}-gallery`);
+                    const img = document.createElement("img");
+                    img.src = imageUrl;
+                    img.alt = "Uploaded image";
+                    img.className = "uploaded-image";
+                    targetDiv.prepend(img);
+                } else if (error) {
+                    console.error("Upload failed:", error);
+                }
+            });
+        }
+
+        function loadImagesByTag(tag, containerId) {
+            const gallery = document.getElementById(containerId);
+            const url = `https://res.cloudinary.com/${cloudName}/image/list/${tag}.json`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    data.resources.forEach(item => {
+                        const img = document.createElement("img");
+                        img.src = `https://res.cloudinary.com/${cloudName}/image/upload/${item.public_id}.${item.format}`;
+                        img.alt = "Gallery image";
+                        img.className = "uploaded-image";
+                        gallery.appendChild(img);
+                    });
+                })
+                .catch(error => {
+                    console.warn(`Could not load ${tag} images:`, error);
+                });
+        }
+
+        window.onload = () => {
             loadImagesByTag('life', 'life-gallery');
             loadImagesByTag('tech', 'tech-gallery');
-        });
+        };
     </script>
 </body>
 </html>
