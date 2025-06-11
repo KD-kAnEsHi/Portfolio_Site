@@ -23,7 +23,6 @@ html, body{
 
 
 
-
 /* NAVIGATION BAR - PORTOFOLIO */
 nav {       /* Navigation  bars of the program: */
     position: fixed;
@@ -120,11 +119,10 @@ nav li.active a {
 
 #home {
     margin-bottom: 2rem;
-    color:#111;
     flex-wrap: wrap;
 
     display: flex;
-    background-image: url(../images/manga.jpg);
+    background-image: url(../images/pain-build.jpg);
     background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
@@ -145,7 +143,7 @@ nav li.active a {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(255, 255, 255, 0.4); /* White overlay with 40% opacity */
+    background: rgba(255, 255, 255, 00); 
     z-index: 1;
 }
 
@@ -163,6 +161,10 @@ nav li.active a {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
+#profile-img img:hover {
+    transform: scale(1.07);
+}
+
 .introduction h2 {
     font-size: 3rem;
     margin-bottom: 0.5rem;
@@ -178,6 +180,7 @@ nav li.active a {
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: black;
+
 }
 
 .social-links {
@@ -235,7 +238,7 @@ nav li.active a {
 /* SECTIONS : Project - PORTOFOLIO */
 #project {
     display: flex;
-    gap: 5rem;
+    gap: 3rem;
 }
 
 .project-heading {
@@ -266,16 +269,24 @@ nav li.active a {
 
     padding: 2rem;
     max-width: 100%;
-    max-height: 100%;
-    min-height: 400px;
+    max-height: 100%; /**/
+    height: 480px;
     border-radius: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     gap: 2rem;
 }
 
+.project-card img:hover {
+    transform: scale(1.02);
+}
+
 .project-image {
+    flex: 0 0 40%;
     width: 40%;
     height: 100%;
+    object-fit: contain;
+    object-position: center;
+
     border-radius: 1rem;
     object-fit: cover;
 }
@@ -284,7 +295,7 @@ nav li.active a {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 2rem;
     height: 100%;
 }
@@ -306,7 +317,7 @@ nav li.active a {
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: auto;
 
     display: inline-block;
     margin-right: 1rem;
@@ -364,7 +375,7 @@ nav li.active a {
 .experience-card {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch; /* Changed from center to stretch */
     justify-content: space-between;
     background-color: rgba(255, 255, 255, 0.9);
     width: 100%;
@@ -372,8 +383,7 @@ nav li.active a {
 
     padding: 2rem;
     max-width: 100%;
-    max-height: 100%;
-    min-height: 370px;
+    height: 400px; /* Fixed height for all cards */
     border-radius: 2rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
@@ -403,9 +413,9 @@ nav li.active a {
 }
 
 .experience-card img {
-    flex: 1; 
+    flex: 0 0 30%; 
     max-width: 30%; 
-    min-width: 300px; 
+    min-width: 250px; 
     height: 100%; 
     object-fit: cover; 
     border-radius: 15px; 
@@ -415,13 +425,9 @@ nav li.active a {
 }
 
 .experience-card img:hover {
-    transform: scale(1.02); /* Slight zoom on hover */
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+    transform: scale(1.02); 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); 
 }
-
-
-
-
 
 /* EXPERIENCE: Jobs*/
 .job-title {
@@ -430,6 +436,7 @@ nav li.active a {
     text-decoration: underline;
     font-weight: bold;
     border-left: 4px solid red;
+    margin-bottom: 1rem; /* Added margin */
 }
 
 .job-title:hover {
@@ -440,6 +447,12 @@ nav li.active a {
 .job-description {
     font-size: large;
     font-size: 200%;
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    height: 100%;
+    overflow: hidden; 
 }
 
 .company-details {
@@ -447,13 +460,33 @@ nav li.active a {
     display: flex;
     flex-direction: row;
     font-weight: bolder;
-    gap: 10rem;
+    justify-content: space-between; 
+    align-items: flex-start;
+    margin-bottom: 1rem; 
+    width: 100%; 
+}
+
+.company-name {
+    flex: 1; /* Take available space */
+}
+
+.comapany-date {
+    flex-shrink: 0; 
+    text-align: right;
+    min-width: fit-content; 
 }
 
 .job-description ul{
     padding-left: 50px;
     font-size: 60%;
-    background: white;
+    flex: 1; 
+    overflow-y: auto; 
+}
+
+.bullet-exp {
+    font-size: 0.9rem; 
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
 }
 
 
@@ -492,43 +525,18 @@ nav li.active a {
     padding: 0 5vw;
 }
 
-.education-list {
-    display: flex;
-    flex-direction: row;
-
-    width: 100%;
-    padding: 2rem 5vw;
-    box-sizing: border-box;
-    border-bottom: 2px solid #e0e0e0;
-}
-
-.school-name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-}
-
-.date {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
-.education-list {
-    list-style: disc;
-    padding-left: 1.5rem;
-    line-height: 1.6;
-}
 
 
 
 
 
-
-/* EXPERIENCE : HUB - PORTOFOLIO */
+/* EDUCATION : HUB - PORTOFOLIO */
 #education {
     padding: 4rem 0;
     display: flex;
     flex-direction: column;
+
+    border-bottom: 1px solid #bfbfbf;
 }
 
 .education-title {
@@ -556,8 +564,11 @@ nav li.active a {
     text-align: left;
     max-width: 900px;
     width: 100%;
-    padding: 2rem 5rw;
+    padding: 2rem 5vw; 
     box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9); 
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .school-name {
@@ -567,11 +578,24 @@ nav li.active a {
 }
 
 .date {
-    gap: 10rem;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    width: 100%; 
+}
+
+.date p:first-child {
+    flex: 1; 
+}
+
+.date p:last-child {
+    flex-shrink: 0; 
+    text-align: right; 
+    font-weight: bold; 
+    min-width: fit-content; 
 }
 
 .education-details{
@@ -579,7 +603,7 @@ nav li.active a {
     padding-left: 1.5rem;
     line-height: 1.6;
     text-align: left;
-    display: inline-block;
+    display: block; 
 }
 
 
@@ -624,6 +648,4 @@ nav li.active a {
     color: #007acc;
     margin: 0.25rem 0;
     text-decoration: none;
-
 }
-
