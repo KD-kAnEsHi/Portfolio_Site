@@ -4,4 +4,6 @@ Hello this is my personal site,
 
 Thanks For checking this out, lol
 
+v2 - Is going to have to the serves build using node.js and stored data in the database (Learning these tools at the moment)
+
 https://kd-kaneshi.github.io/Portfolio_Site/index.html
